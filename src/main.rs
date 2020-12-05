@@ -18,24 +18,6 @@ use std::{error::Error, path::PathBuf};
 
 use structopt::{clap::Arg, StructOpt};
 
-#[derive(Debug)]
-pub enum FileType {
-    Json,
-    Toml,
-    Yaml,
-}
-
-impl FileType {
-    fn get_file_type_from_extension(ext: &str) -> Option<FileType> {
-        match ext {
-            "yaml" | "yml" => Some(FileType::Yaml),
-            "json" => Some(FileType::Json),
-            "toml" => Some(FileType::Toml),
-            _ => None,
-        }
-    }
-}
-
 #[derive(Debug, Clone)]
 struct DataLists {
     player_list: Vec<players::Players>,
@@ -102,8 +84,12 @@ impl DataLists {
         let list: Vec<T> = serde_any::from_file(path).expect("Parsing of the data file failed.");
         Ok(list)
     }
-    // TODO: make generic for yaml and json
-    fn write_list_to_file<P, S>(path: P, obj: S) -> Result<(), std::io::Error>
+
+    fn write_list_to_file<P, S>(
+        path: P,
+        obj: S,
+        fmt: serde_any::Format,
+    ) -> Result<(), std::io::Error>
     where
         P: AsRef<Path>,
         S: Serialize,
@@ -113,9 +99,18 @@ impl DataLists {
         let writer = BufWriter::new(file);
 
         // Write data to file
-        serde_yaml::to_writer(writer, &obj).expect("Unable to write data");
+        serde_any::to_writer(writer, &obj, fmt).expect("Unable to write data");
 
         Ok(())
+    }
+
+    fn get_file_type_from_extension(ext: &str) -> Option<serde_any::Format> {
+        match ext {
+            "yaml" | "yml" => Some(serde_any::Format::Yaml),
+            "json" => Some(serde_any::Format::Json),
+            "toml" => Some(serde_any::Format::Toml),
+            _ => None,
+        }
     }
 }
 
@@ -130,7 +125,7 @@ fn main() {
     // let mut lists: DataLists;
     // let file_type: FileType;
 
-    // if let Some(x) = FileType::get_file_type_from_extension(
+    // if let Some(x) = DataLists::get_file_type_from_extension(
     //     &opt.input.extension().and_then(OsStr::to_str).unwrap(),
     // ) {
     //     let file_type = x;

@@ -13,4 +13,4 @@ serde_json = "1.0"
 serde_yaml = "0.8"
 toml = "0.5"
 structopt = "0.3"
-serde_any = { git = "https://github.com/simonsan/serde_any.git", version = "0.5.1"}
+serde_any = { git = "https://github.com/simonsan/serde_any.git", version = "0.5.1", default-features = false, features = ["yaml", "toml", "json"]}
