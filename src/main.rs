@@ -89,31 +89,18 @@ impl DataLists {
 
     fn read_list_from_file<T>(
         path: &dyn AsRef<Path>,
-        ftype: Option<FileType>,
+        //    ftype: Option<FileType>,
     ) -> Result<Vec<T>, Box<dyn Error>>
     where
         T: DeserializeOwned,
     {
         // Open the file in read-only mode with buffer.
-        let file = File::open(&path)?;
-        let reader = BufReader::new(file);
+        // let file = File::open(&path)?;
+        // let reader = BufReader::new(file);
 
-        match ftype {
-            Some(FileType::Yaml) => {
-                // Read the YAML contents of the file as an instance of `Vec<T>`.
-                let list: Vec<T> = serde_yaml::from_reader(reader)?;
-                Ok(list)
-            }
-            Some(FileType::Json) => {
-                // Read the JSON contents of the file as an instance of `Vec<T>`.
-                let list: Vec<T> = serde_json::from_reader(reader)?;
-                Ok(list)
-            }
-            _ => {
-                println!("File type of input file doesn't match to any deserializable format.");
-                panic!();
-            }
-        }
+        // Read the list contents of the file as an instance of `Vec<T>`.
+        let list: Vec<T> = serde_any::from_file(path).expect("Parsing of the data file failed.");
+        Ok(list)
     }
     // TODO: make generic for yaml and json
     fn write_list_to_file<P, S>(path: P, obj: S) -> Result<(), std::io::Error>
@@ -140,20 +127,22 @@ fn main() {
     //     link(&args.filename, &output, &args.linkline)?;
     // }
 
-    let mut lists: DataLists;
-    let file_type: FileType;
+    // let mut lists: DataLists;
+    // let file_type: FileType;
 
-    if let Some(x) = FileType::get_file_type_from_extension(
-        &opt.input.extension().and_then(OsStr::to_str).unwrap(),
-    ) {
-        let file_type = x;
-    }
+    // if let Some(x) = FileType::get_file_type_from_extension(
+    //     &opt.input.extension().and_then(OsStr::to_str).unwrap(),
+    // ) {
+    //     let file_type = x;
+    // }
+
+    let players: Vec<lists::players::Players> = DataLists::read_list_from_file(&opt.input).unwrap();
 
     // players.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
 
     // players.dedup_by(|a, b| a.name.eq_ignore_ascii_case(b.name));
 
-    // println!("deserialize: {:#?}", players);
+    println!("deserialize: {:#?}", players);
     // println!("deserialize: {:#?}", teams);
 
     //     if let Some(output) = opt.output {

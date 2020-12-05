@@ -1,11 +1,16 @@
 [package]
-name = "aoe-data"
+name = "aoe-data-util"
 version = "0.1.0"
 authors = ["Simon <simon@systemli.org>"]
 edition = "2018"
+description = """
+A utility to manage data lists in the AoE universe.
+"""
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_yaml = "0.8"
+toml = "0.5"
 structopt = "0.3"
+serde_any = { git = "https://github.com/simonsan/serde_any.git", version = "0.5.1"}
