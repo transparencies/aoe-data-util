@@ -2,14 +2,10 @@
 #![deny(clippy::pedantic)]
 
 mod cli;
-mod platforms;
-mod players;
-mod teams;
+mod lists;
 
 use crate::cli::*;
-use crate::platforms::*;
-use crate::players::*;
-use crate::teams::*;
+use crate::lists::*;
 
 use ::serde::{de::DeserializeOwned, Serialize};
 
