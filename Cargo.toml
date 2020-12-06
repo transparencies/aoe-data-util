@@ -8,9 +8,20 @@ A utility to manage data lists in the AoE universe.
 """
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-serde_yaml = "0.8"
-toml = "0.5"
-structopt = "0.3"
+serde = { version = "1.0.117", features = ["derive"] }
+serde_json = "1.0.60"
+serde_yaml = "0.8.14"
+toml = "0.5.7"
+structopt = "0.3.21"
 serde_any = { git = "https://github.com/simonsan/serde_any.git", version = "0.5.1", default-features = false, features = ["yaml", "toml", "json"]}
+eyre = "0.6"
+stable-eyre = "0.2"
+human-panic = "1.0"
+log = "0.4"
+simple-log = "0.3"
+
+[dev-dependencies]
+thiserror = "1.0"
+
+[profile.dev.package.backtrace]
+opt-level = 3

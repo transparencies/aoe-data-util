@@ -3,7 +3,7 @@ use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
 #[structopt(
-    name = "aoe-data",
+    name = "aoe-data-util",
     about = "Utility for managing contents of the aoc-data repository"
 )]
 pub struct Args {
