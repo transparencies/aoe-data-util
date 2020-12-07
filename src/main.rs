@@ -1,6 +1,5 @@
 //! Executable for managing aoe-reference-data files.
 //!
-//!
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 // TODO: Temporary, remove later
@@ -13,7 +12,12 @@
 extern crate log;
 use human_panic::setup_panic;
 use simple_log::LogConfigBuilder;
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 use std::process;
 
 // Crate internals
@@ -33,7 +37,8 @@ fn main() -> Result<(), Report> {
             name: env!("CARGO_PKG_NAME").into(),
             version: env!("CARGO_PKG_VERSION").into(),
             authors: "Simonsan <simon@systemli.org>".into(),
-            homepage: "https://github.com/transparencies/aoe-data-util/issues".into(),
+            homepage: "https://github.com/transparencies/aoe-data-util/issues"
+                .into(),
         });
     }
 
@@ -63,5 +68,5 @@ fn main() -> Result<(), Report> {
         Ok(k) => Ok(k),
     }
 
-    //info!("test builder info");
+    // info!("test builder info");
 }

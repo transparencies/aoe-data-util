@@ -1,5 +1,4 @@
 //! Everything regarding the commandline interface
-//!
 
 #![warn(missing_docs)]
 
@@ -36,11 +35,11 @@ pub struct Args {
     /// Filetype that should be used for output [yaml, json, toml]
     #[structopt(long = "otype")]
     pub out_type: Option<String>,
-    // /// File name: only required when `out-type` is set to `file`
-    // #[structopt(name = "FILE", required_if("out-type", "file"))]
-    // pub file_name: Option<String>,
-    // #[structopt(subcommand)]
-    // pub cmd: Command,
+    /* /// File name: only required when `out-type` is set to `file`
+     * #[structopt(name = "FILE", required_if("out-type", "file"))]
+     * pub file_name: Option<String>,
+     * #[structopt(subcommand)]
+     * pub cmd: Command, */
 }
 
 // #[derive(StructOpt, Debug)]

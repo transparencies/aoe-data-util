@@ -1,5 +1,4 @@
 //! Library for managing aoe-reference-data files
-//!
 
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
@@ -12,8 +11,19 @@ pub mod cli;
 mod core;
 mod datalists;
 
-use log::{debug, error, info, trace, warn};
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use log::{
+    debug,
+    error,
+    info,
+    trace,
+    warn,
+};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 // use structopt::{clap::Arg, StructOpt};
 
 /// Entrypoint for the library part of the Executable's main function
@@ -33,7 +43,8 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
 //     let file_type = x;
 // }
 
-// let players: Vec<players::Players> = DataLists::read_list_from_file(&opt.input).unwrap();
+// let players: Vec<players::Players> =
+// DataLists::read_list_from_file(&opt.input).unwrap();
 
 // players.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
 

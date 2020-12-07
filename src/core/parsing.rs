@@ -5,19 +5,44 @@
 #![allow(unused_imports)]
 #![warn(missing_docs)]
 
-use crate::datalists::{platforms, players, teams};
+use crate::datalists::{
+    platforms,
+    players,
+    teams,
+};
 
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{
+    de::DeserializeOwned,
+    Serialize,
+};
 
-use std::ffi::OsStr;
-use std::fs::File;
-use std::io::BufReader;
-use std::io::BufWriter;
-use std::path::Path;
-use std::{error::Error, path::PathBuf};
+use std::{
+    error::Error,
+    ffi::OsStr,
+    fs::File,
+    io::{
+        BufReader,
+        BufWriter,
+    },
+    path::{
+        Path,
+        PathBuf,
+    },
+};
 
-use log::{debug, error, info, trace, warn};
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use log::{
+    debug,
+    error,
+    info,
+    trace,
+    warn,
+};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 
 #[derive(Debug, Clone)]
 pub struct DataLists {
@@ -31,14 +56,14 @@ impl DataLists {
     //     path.file_name().and_then(OsStr::to_str?)
     // }
 
-    // fn load_data_from_input_file(file_type: FileType, path: &dyn AsRef<Path>) -> Datalists {
-    //     match filename {
+    // fn load_data_from_input_file(file_type: FileType, path: &dyn AsRef<Path>)
+    // -> Datalists {     match filename {
     //         "players" => {
     //             let lists = DataLists {
     //                 player_list: Some(
-    //                     read_list_from_file::<players::Players>(&opt.input, file_type)
-    //                         .expect("Parsing of players file failed."),
-    //                 ),
+    //                     read_list_from_file::<players::Players>(&opt.input,
+    // file_type)                         .expect("Parsing of players file
+    // failed."),                 ),
     //                 teams_list: None,
     //                 platforms_list: None,
     //             };
@@ -46,9 +71,9 @@ impl DataLists {
     //         "teams" => {
     //             let lists = DataLists {
     //                 teams_list: Some(
-    //                     read_list_from_file::<teams::Teams>(&opt.input, file_type)
-    //                         .expect("Parsing of teams file failed."),
-    //                 ),
+    //                     read_list_from_file::<teams::Teams>(&opt.input,
+    // file_type)                         .expect("Parsing of teams file
+    // failed."),                 ),
     //                 player_list: None,
     //                 platforms_list: None,
     //             };
@@ -56,7 +81,8 @@ impl DataLists {
     //         "platforms" => {
     //             let lists = DataLists {
     //                 platforms_list: Some(
-    //                     read_list_from_file::<platforms::Platforms>(&opt.input, file_type)
+    //                     
+    // read_list_from_file::<platforms::Platforms>(&opt.input, file_type)
     //                         .expect("Parsing of platforms file failed.of"),
     //                 ),
     //                 player_list: None,
@@ -64,8 +90,8 @@ impl DataLists {
     //             };
     //         }
     //         _ => {
-    //             println!("File type of input file doesn't match to any deserializable format.");
-    //             panic!();
+    //             println!("File type of input file doesn't match to any
+    // deserializable format.");             panic!();
     //         }
     //     }
     // }
@@ -82,7 +108,8 @@ impl DataLists {
         // let reader = BufReader::new(file);
 
         // Read the list contents of the file as an instance of `Vec<T>`.
-        let list: Vec<T> = serde_any::from_file(path).expect("Parsing of the data file failed.");
+        let list: Vec<T> = serde_any::from_file(path)
+            .expect("Parsing of the data file failed.");
         Ok(list)
     }
 
@@ -105,7 +132,9 @@ impl DataLists {
         Ok(())
     }
 
-    pub fn get_file_type_from_extension(ext: &str) -> Option<serde_any::Format> {
+    pub fn get_file_type_from_extension(
+        ext: &str
+    ) -> Option<serde_any::Format> {
         match ext {
             "yaml" | "yml" => Some(serde_any::Format::Yaml),
             "json" => Some(serde_any::Format::Json),

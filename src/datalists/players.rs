@@ -1,12 +1,19 @@
-use ::serde::{Deserialize, Serialize};
+use ::serde::{
+    Deserialize,
+    Serialize,
+};
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct PlayersList {
     #[serde(rename = "Players")]
     pub list: Vec<Players>,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct Players {
     pub name: String,
     #[serde(default)]
@@ -23,7 +30,9 @@ pub struct Players {
     pub youtube: Option<String>,
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Clone, Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct Platforms {
     #[serde(default)]
     pub de: Vec<String>,
