@@ -1,6 +1,12 @@
+//! Everything regarding the commandline interface
+//!
+
+#![warn(missing_docs)]
+
 use std::path::PathBuf;
 use structopt::StructOpt;
 
+/// StructOpt's struct for parsing commandline input
 #[derive(StructOpt, Debug)]
 #[structopt(
     name = "aoe-data-util",

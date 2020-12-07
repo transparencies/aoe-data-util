@@ -1,8 +1,12 @@
+//! Executable for managing aoe-reference-data files.
+//!
+//!
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
+#![warn(missing_docs)]
 
 // Error handling
 #[macro_use]

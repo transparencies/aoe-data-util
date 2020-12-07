@@ -3,6 +3,7 @@
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
+#![warn(missing_docs)]
 
 use crate::datalists::{platforms, players, teams};
 

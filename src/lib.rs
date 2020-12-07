@@ -1,8 +1,12 @@
+//! Library for managing aoe-reference-data files
+//!
+
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
+#![warn(missing_docs)]
 
 pub mod cli;
 mod core;
@@ -12,6 +16,7 @@ use log::{debug, error, info, trace, warn};
 use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 // use structopt::{clap::Arg, StructOpt};
 
+/// Entrypoint for the library part of the Executable's main function
 pub fn run(config: cli::Args) -> Result<(), Report> {
     debug!("{:#?}", config);
     debug!("Welcome to the run-function");
