@@ -14,6 +14,8 @@ pub mod cli;
 mod core;
 mod datalists;
 
+use crate::core::parsing::DataLists;
+use crate::datalists::{platforms, players, teams};
 use log::{debug, error, info, trace, warn};
 use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 use std::ffi::OsStr;
@@ -24,24 +26,17 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
     debug!("CLI config: {:#?}", config);
     trace!("We are inside the run-function!");
 
+    let data_list: DataLists;
+
     // Open and parse files
-    // match cli arguments for given datalists
-    // parse given datalists to DataLists struct
-
-    match config.players_input_path {
-        Some(k) => debug!("Player file given: {:?}", k),
-        None => {}
+    match DataLists::new_from_cli_config(config) {
+        Err(err) => return Err(err),
+        Ok(k) => data_list = k,
     };
 
-    match config.teams_input_path {
-        Some(k) => debug!("Teams file given: {:?}", k),
-        None => {}
-    };
-
-    match config.platforms_input_path {
-        Some(k) => debug!("Platforms file given: {:?}", k),
-        None => {}
-    }
+    debug!("deserialize: {:#?}", data_list.player_list);
+    debug!("deserialize: {:#?}", data_list.team_list);
+    debug!("deserialize: {:#?}", data_list.platform_list);
 
     Ok(())
 }
@@ -54,16 +49,8 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
 // ) {
 //     let file_type = x;
 // }
-
-// let players: Vec<players::Players> =
-// DataLists::read_list_from_file(&opt.input).unwrap();
-
 // players.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
-
 // players.dedup_by(|a, b| a.name.eq_ignore_ascii_case(b.name));
-
-// println!("deserialize: {:#?}", players);
-// println!("deserialize: {:#?}", teams);
 
 //     if let Some(output) = opt.output {
 //         write_list_to_file(output, players);

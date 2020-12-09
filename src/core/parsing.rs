@@ -20,22 +20,23 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::cli;
 use log::{debug, error, info, trace, warn};
 use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 
 #[derive(Debug, Clone)]
 pub struct DataLists {
-    player_list: Vec<players::Players>,
-    teams_list: Vec<teams::Teams>,
-    platforms_list: Vec<platforms::Platforms>,
+    pub player_list: Vec<players::Players>,
+    pub team_list: Vec<teams::Teams>,
+    pub platform_list: Vec<platforms::Platforms>,
 }
 
 impl DataLists {
     pub fn new() -> DataLists {
         DataLists {
             player_list: Vec::new(),
-            teams_list: Vec::new(),
-            platforms_list: Vec::new(),
+            team_list: Vec::new(),
+            platform_list: Vec::new(),
         }
     }
 
@@ -43,66 +44,60 @@ impl DataLists {
     //     path.file_name().and_then(OsStr::to_str?)
     // }
 
-    // fn load_data_from_input_file(
-    //     file_type: FileType,
-    //     path: &dyn AsRef<Path>,
-    // ) -> Datalists {
-    //     match filename {
-    //         "players" => {
-    //             let lists = DataLists {
-    //                 player_list: Some(
-    //                     read_list_from_file::<players::Players>(
-    //                         &opt.input, file_type,
-    //                     )
-    //                     .expect(
-    //                         "Parsing of players file
-    // failed.",
-    //                     ),
-    //                 ),
-    //                 teams_list: None,
-    //                 platforms_list: None,
-    //             };
-    //         }
-    //         "teams" => {
-    //             let lists = DataLists {
-    //                 teams_list: Some(
-    //                     read_list_from_file::<teams::Teams>(
-    //                         &opt.input, file_type,
-    //                     )
-    //                     .expect(
-    //                         "Parsing of teams file
-    // failed.",
-    //                     ),
-    //                 ),
-    //                 player_list: None,
-    //                 platforms_list: None,
-    //             };
-    //         }
-    //         "platforms" => {
-    //             let lists = DataLists {
-    //                 platforms_list: Some(
-    //                     read_list_from_file::<platforms::Platforms>(
-    //                         &opt.input, file_type,
-    //                     )
-    //                     .expect("Parsing of platforms file failed.of"),
-    //                 ),
-    //                 player_list: None,
-    //                 teams_list: None,
-    //             };
-    //         }
-    //         _ => {
-    //             println!(
-    //                 "File type of input file doesn't match to any
-    // deserializable format."
-    //             );
-    //             panic!();
-    //         }
-    //     }
-    // }
+    /// Fills members of a DataLists object with data deserialised from
+    /// file paths that were given via the command line arguments
+    /// players_input_path, teams_input_path, platforms_input_path
+    pub fn new_from_cli_config(config: cli::Args) -> Result<DataLists, Report> {
+        // TODO: Error handling
+        let mut data = DataLists::new();
 
-    pub fn read_list_from_file<T>(
-        path: &dyn AsRef<Path>,
-        //    ftype: Option<FileType>,
+        // Deserializing Player file
+        match config.players_input_path {
+            Some(k) => {
+                debug!("Player file given: {:?}", &k);
+                data.player_list =
+                    DataLists::deserialize_list_to_vec_from_file::<
+                        players::Players,
+                    >(&k)
+                    .expect("Parsing of players file failed.");
+            }
+            None => {}
+        };
+
+        // Deserializing Teams file
+        match config.teams_input_path {
+            Some(k) => {
+                debug!("Teams file given: {:?}", &k);
+                data.team_list =
+                DataLists::deserialize_list_to_vec_from_file::<teams::Teams>(
+                    &k,
+                )
+                .expect("Parsing of teams file failed.");
+            }
+            None => {}
+        };
+
+        // Deserializing Platforms file
+        match config.platforms_input_path {
+            Some(k) => {
+                debug!("Platforms file given: {:?}", &k);
+                data.platform_list =
+                    DataLists::deserialize_list_to_vec_from_file::<
+                        platforms::Platforms,
+                    >(&k)
+                    .expect("Parsing of platforms file failed.");
+            }
+            None => {}
+        }
+
+        // Returning DataLists Struct
+        Ok(data)
+    }
+
+    /// Generic function to deserialize a given file with `serde_any`
+    /// from a path into a vector that contains a special datatype T  
+    pub fn deserialize_list_to_vec_from_file<T>(
+        path: &dyn AsRef<Path>
     ) -> Result<Vec<T>, Report>
     where
         T: DeserializeOwned,
@@ -136,6 +131,8 @@ impl DataLists {
         Ok(())
     }
 
+    /// Matches the extension of a given filename and
+    /// returns the datatype for serde
     pub fn get_file_type_from_extension(
         ext: &str
     ) -> Option<serde_any::Format> {
