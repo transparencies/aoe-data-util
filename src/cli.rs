@@ -37,16 +37,24 @@ pub struct Args {
     pub verbose: u8,
 
     /// Input file
-    #[structopt(short = "i", long = "input", parse(from_os_str))]
-    pub input: PathBuf,
+    #[structopt(long = "players", parse(from_os_str))]
+    pub players_input_path: Option<PathBuf>,
+
+    /// Input file
+    #[structopt(long = "teams", parse(from_os_str))]
+    pub teams_input_path: Option<PathBuf>,
+
+    /// Input file
+    #[structopt(long = "platforms", parse(from_os_str))]
+    pub platforms_input_path: Option<PathBuf>,
 
     /// Output file, stdout if not present
     #[structopt(short = "o", long = "output", parse(from_os_str))]
-    pub output: Option<PathBuf>,
+    pub output_path: Option<PathBuf>,
 
     /// Filetype that should be used for output [yaml, json, toml]
     #[structopt(long = "otype")]
-    pub out_type: Option<String>,
+    pub output_type: Option<String>,
     /* /// File name: only required when `out-type` is set to `file`
      * #[structopt(name = "FILE", required_if("out-type", "file"))]
      * pub file_name: Option<String>,

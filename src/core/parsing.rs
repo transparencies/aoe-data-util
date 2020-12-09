@@ -1,10 +1,12 @@
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
+// Relax compiler warnings
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(missing_docs)]
 #![allow(dead_code)]
+#![allow(unused_variables)]
 
 use crate::datalists::{platforms, players, teams};
 
@@ -29,18 +31,34 @@ pub struct DataLists {
 }
 
 impl DataLists {
+    pub fn new() -> DataLists {
+        DataLists {
+            player_list: Vec::new(),
+            teams_list: Vec::new(),
+            platforms_list: Vec::new(),
+        }
+    }
+
     // fn get_file_name_from_path(path: AsRef<Path>) -> Option<&str> {
     //     path.file_name().and_then(OsStr::to_str?)
     // }
 
-    // fn load_data_from_input_file(file_type: FileType, path: &dyn AsRef<Path>)
-    // -> Datalists {     match filename {
+    // fn load_data_from_input_file(
+    //     file_type: FileType,
+    //     path: &dyn AsRef<Path>,
+    // ) -> Datalists {
+    //     match filename {
     //         "players" => {
     //             let lists = DataLists {
     //                 player_list: Some(
-    //                     read_list_from_file::<players::Players>(&opt.input,
-    // file_type)                         .expect("Parsing of players file
-    // failed."),                 ),
+    //                     read_list_from_file::<players::Players>(
+    //                         &opt.input, file_type,
+    //                     )
+    //                     .expect(
+    //                         "Parsing of players file
+    // failed.",
+    //                     ),
+    //                 ),
     //                 teams_list: None,
     //                 platforms_list: None,
     //             };
@@ -48,9 +66,14 @@ impl DataLists {
     //         "teams" => {
     //             let lists = DataLists {
     //                 teams_list: Some(
-    //                     read_list_from_file::<teams::Teams>(&opt.input,
-    // file_type)                         .expect("Parsing of teams file
-    // failed."),                 ),
+    //                     read_list_from_file::<teams::Teams>(
+    //                         &opt.input, file_type,
+    //                     )
+    //                     .expect(
+    //                         "Parsing of teams file
+    // failed.",
+    //                     ),
+    //                 ),
     //                 player_list: None,
     //                 platforms_list: None,
     //             };
@@ -58,17 +81,21 @@ impl DataLists {
     //         "platforms" => {
     //             let lists = DataLists {
     //                 platforms_list: Some(
-    //
-    // read_list_from_file::<platforms::Platforms>(&opt.input, file_type)
-    //                         .expect("Parsing of platforms file failed.of"),
+    //                     read_list_from_file::<platforms::Platforms>(
+    //                         &opt.input, file_type,
+    //                     )
+    //                     .expect("Parsing of platforms file failed.of"),
     //                 ),
     //                 player_list: None,
     //                 teams_list: None,
     //             };
     //         }
     //         _ => {
-    //             println!("File type of input file doesn't match to any
-    // deserializable format.");             panic!();
+    //             println!(
+    //                 "File type of input file doesn't match to any
+    // deserializable format."
+    //             );
+    //             panic!();
     //         }
     //     }
     // }

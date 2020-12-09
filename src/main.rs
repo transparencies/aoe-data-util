@@ -1,5 +1,4 @@
 //! Executable for managing aoe-reference-data files.
-//!
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 // TODO: Temporary, remove later
@@ -13,7 +12,12 @@
 extern crate log;
 use human_panic::setup_panic;
 use simple_log::LogConfigBuilder;
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 use std::process;
 
 // Crate internals
