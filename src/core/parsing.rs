@@ -8,21 +8,46 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use crate::datalists::{platforms, players, teams};
+use crate::datalists::{
+    platforms,
+    players,
+    teams,
+};
 
-use serde::{de::DeserializeOwned, Serialize};
+use rayon::iter::IntoParallelRefMutIterator;
+use serde::{
+    de::DeserializeOwned,
+    Serialize,
+};
 
 use std::{
     error::Error,
     ffi::OsStr,
     fs::File,
-    io::{BufReader, BufWriter},
-    path::{Path, PathBuf},
+    io::{
+        BufReader,
+        BufWriter,
+    },
+    path::{
+        Path,
+        PathBuf,
+    },
 };
 
 use crate::cli;
-use log::{debug, error, info, trace, warn};
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use log::{
+    debug,
+    error,
+    info,
+    trace,
+    warn,
+};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 
 #[derive(Debug, Clone)]
 pub struct DataLists {
@@ -96,12 +121,10 @@ impl DataLists {
 
     /// Generic function to deserialize a given file with `serde_any`
     /// from a path into a vector that contains a special datatype T  
-    pub fn deserialize_list_to_vec_from_file<T>(
+    fn deserialize_list_to_vec_from_file<T>(
         path: &dyn AsRef<Path>
     ) -> Result<Vec<T>, Report>
-    where
-        T: DeserializeOwned,
-    {
+    where T: DeserializeOwned {
         // Open the file in read-only mode with buffer.
         // let file = File::open(&path)?;
         // let reader = BufReader::new(file);
@@ -111,6 +134,20 @@ impl DataLists {
             .expect("Parsing of the data file failed.");
         Ok(list)
     }
+
+    /// Sorts the `player_list` vector internally ascending [Aa-Zz] for the name
+    pub fn sort_player_list_by_name(&mut self) {
+        &self
+            .player_list
+            .sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
+    }
+
+    // TODO: Needed `impl` for Interator and IntoIterator
+    // pub fn filter_empty_fields(&mut self) {
+    //     for player in &self.player_list {
+    //         &player.into_iter().filter
+    //     }
+    // }
 
     pub fn write_list_to_file<P, S>(
         path: P,

@@ -1,5 +1,4 @@
 //! Library for managing aoe-reference-data files
-
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 // Relax compiler warnings
@@ -14,10 +13,27 @@ pub mod cli;
 mod core;
 mod datalists;
 
-use crate::core::parsing::DataLists;
-use crate::datalists::{platforms, players, teams};
-use log::{debug, error, info, trace, warn};
-use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
+use crate::{
+    core::parsing::DataLists,
+    datalists::{
+        platforms,
+        players,
+        teams,
+    },
+};
+use log::{
+    debug,
+    error,
+    info,
+    trace,
+    warn,
+};
+use stable_eyre::eyre::{
+    eyre,
+    Report,
+    Result,
+    WrapErr,
+};
 use std::ffi::OsStr;
 // use structopt::{clap::Arg, StructOpt};
 
@@ -26,7 +42,7 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
     debug!("CLI config: {:#?}", config);
     trace!("We are inside the run-function!");
 
-    let data_list: DataLists;
+    let mut data_list: DataLists;
 
     // Open and parse files
     match DataLists::new_from_cli_config(config) {
@@ -34,9 +50,13 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
         Ok(k) => data_list = k,
     };
 
-    debug!("deserialize: {:#?}", data_list.player_list);
-    debug!("deserialize: {:#?}", data_list.team_list);
-    debug!("deserialize: {:#?}", data_list.platform_list);
+    data_list.sort_player_list_by_name();
+
+    // data_list.filter_empty_fields();
+
+    debug!("Deserialize: {:#?}", data_list.player_list);
+    // debug!("Deserialize: {:#?}", data_list.team_list);
+    // debug!("Deserialize: {:#?}", data_list.platform_list);
 
     Ok(())
 }
@@ -49,7 +69,7 @@ pub fn run(config: cli::Args) -> Result<(), Report> {
 // ) {
 //     let file_type = x;
 // }
-// players.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
+
 // players.dedup_by(|a, b| a.name.eq_ignore_ascii_case(b.name));
 
 //     if let Some(output) = opt.output {

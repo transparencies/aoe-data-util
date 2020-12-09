@@ -19,6 +19,7 @@ stable-eyre = "0.2"
 human-panic = "1.0"
 log = "0.4"
 simple-log = "1.0"
+rayon = "1.5"
 
 [dev-dependencies]
 thiserror = "1.0"
