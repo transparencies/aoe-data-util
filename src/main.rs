@@ -5,19 +5,15 @@
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
-#![warn(missing_docs)]
+#![allow(missing_docs)]
+#![allow(dead_code)]
 
 // Error handling
 #[macro_use]
 extern crate log;
 use human_panic::setup_panic;
 use simple_log::LogConfigBuilder;
-use stable_eyre::eyre::{
-    eyre,
-    Report,
-    Result,
-    WrapErr,
-};
+use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 use std::process;
 
 // Crate internals
@@ -45,18 +41,22 @@ fn main() -> Result<(), Report> {
     // Calling the command line parsing logic with the argument values
     let cli_args = aoe_data_util::cli::Args::from_args();
 
-    // Setting up logfile
-    // TODO: Setup logfile path dynamically with CLI argument
-    let log_setup = LogConfigBuilder::builder()
-        .path("./logs/aoe-data-util.log")
-        .size(1 * 100)
-        .roll_count(10)
-        .level("debug")
-        .output_file()
-        .output_console()
-        .build();
+    // If `debug` flag is set, we use a logfile
+    if cli_args.debug {
+        // Setting up logfile
+        let log_setup = LogConfigBuilder::builder()
+            .path(&cli_args.log_file_path)
+            .size(1 * 100)
+            .roll_count(10)
+            .level(&cli_args.log_level)
+            .output_file()
+            .output_console()
+            .build();
 
-    simple_log::new(log_setup).expect("Log setup failed!");
+        simple_log::new(log_setup.clone()).expect("Log setup failed!");
+        debug!("Log config: {:?}", &log_setup);
+        trace!("Logs were set up.");
+    }
 
     // Setting up any other configuration
     // TODO
@@ -67,6 +67,4 @@ fn main() -> Result<(), Report> {
         Err(e) => Err(e).wrap_err("aoe-data-util experienced a failure!"),
         Ok(k) => Ok(k),
     }
-
-    // info!("test builder info");
 }

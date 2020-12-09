@@ -5,31 +5,21 @@
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
-#![warn(missing_docs)]
+#![allow(missing_docs)]
+#![allow(dead_code)]
 
 pub mod cli;
 mod core;
 mod datalists;
 
-use log::{
-    debug,
-    error,
-    info,
-    trace,
-    warn,
-};
-use stable_eyre::eyre::{
-    eyre,
-    Report,
-    Result,
-    WrapErr,
-};
+use log::{debug, error, info, trace, warn};
+use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 // use structopt::{clap::Arg, StructOpt};
 
 /// Entrypoint for the library part of the Executable's main function
 pub fn run(config: cli::Args) -> Result<(), Report> {
-    debug!("{:#?}", config);
-    debug!("Welcome to the run-function");
+    debug!("CLI config: {:#?}", config);
+    trace!("We are inside the run-function!");
 
     Ok(())
 }

@@ -641,12 +641,15 @@ dependencies = [
 
 [[package]]
 name = "simple-log"
-version = "0.3.0"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4bf1ba50655f391b8188aaaaf5dd00229403206453ea21a578ac66ebffaf18e6"
+checksum = "a7c148c38e271922d11fa2bb83019b12e23229bf256fe8aa5c301f9c1568a2fe"
 dependencies = [
  "log",
  "log4rs",
+ "once_cell",
+ "serde",
+ "serde_derive",
 ]
 
 [[package]]

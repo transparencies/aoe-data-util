@@ -3,46 +3,23 @@
 // TODO: Temporary, remove later
 #![allow(dead_code)]
 #![allow(unused_imports)]
-#![warn(missing_docs)]
+#![allow(missing_docs)]
+#![allow(dead_code)]
 
-use crate::datalists::{
-    platforms,
-    players,
-    teams,
-};
+use crate::datalists::{platforms, players, teams};
 
-use serde::{
-    de::DeserializeOwned,
-    Serialize,
-};
+use serde::{de::DeserializeOwned, Serialize};
 
 use std::{
     error::Error,
     ffi::OsStr,
     fs::File,
-    io::{
-        BufReader,
-        BufWriter,
-    },
-    path::{
-        Path,
-        PathBuf,
-    },
+    io::{BufReader, BufWriter},
+    path::{Path, PathBuf},
 };
 
-use log::{
-    debug,
-    error,
-    info,
-    trace,
-    warn,
-};
-use stable_eyre::eyre::{
-    eyre,
-    Report,
-    Result,
-    WrapErr,
-};
+use log::{debug, error, info, trace, warn};
+use stable_eyre::eyre::{eyre, Report, Result, WrapErr};
 
 #[derive(Debug, Clone)]
 pub struct DataLists {
@@ -81,7 +58,7 @@ impl DataLists {
     //         "platforms" => {
     //             let lists = DataLists {
     //                 platforms_list: Some(
-    //                     
+    //
     // read_list_from_file::<platforms::Platforms>(&opt.input, file_type)
     //                         .expect("Parsing of platforms file failed.of"),
     //                 ),
@@ -99,7 +76,7 @@ impl DataLists {
     pub fn read_list_from_file<T>(
         path: &dyn AsRef<Path>,
         //    ftype: Option<FileType>,
-    ) -> Result<Vec<T>, Box<dyn Error>>
+    ) -> Result<Vec<T>, Report>
     where
         T: DeserializeOwned,
     {

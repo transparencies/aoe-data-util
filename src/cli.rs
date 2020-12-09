@@ -1,6 +1,10 @@
 //! Everything regarding the commandline interface
 
-#![warn(missing_docs)]
+// TODO: Temporary, remove later
+#![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(missing_docs)]
+#![allow(dead_code)]
 
 use std::path::PathBuf;
 use structopt::StructOpt;
@@ -18,6 +22,14 @@ pub struct Args {
     /// Activate debug mode
     #[structopt(short, long)]
     pub debug: bool,
+
+    /// Log file path
+    #[structopt(long = "log-file", default_value = "./logs/aoe-data-util.log")]
+    pub log_file_path: String,
+
+    /// Log file path
+    #[structopt(long = "log-level", default_value = "debug")]
+    pub log_level: String,
 
     // The number of occurrences of the `v/verbose` flag
     /// Verbose mode (-v, -vv, -vvv, etc.)
